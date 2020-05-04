@@ -13,23 +13,20 @@ var main = (function () {
             }
         };
         Singleton.defaultOptions = {
-            general_help: "Below is a list of helpful commands to begin navigating the databse.\nYou can use autofill by pressing the TAB key, autocompleting if there's only 1 possibility, or showing you a list of possibilities.",
-            ls_help: "List information about the files and folders (the current directory by default).",
-            cat_help: "Read FILE(s) content and print it to the standard output (screen).",
+            general_help: "Below is a list of helpful commands to begin navigating the database.\nYou can use autofill by pressing the TAB key, autocompleting if there's only 1 possibility, or showing you a list of possibilities. \nIn order to skip text rolling, double click anywhere.",
+            list_help: "Lists any files currently stored on the database.",
+            retrieve_help: "Read FILE(s) content and print it to the standard output (screen).",
             whoami_help: "Print the user name associated with the current effective user ID and more info.",
-            dates_help: "A list of entry dates. To navigate to a desired date, type: ",
+            dates_help: "A list of entry dates. To access entries, use retrieve command on the correct file. ",
             help_help: "Print this menu.",
             clear_help: "Clear the terminal screen.",
             reboot_help: "Reboot the system.",
-            cd_help: "Change the current working directory.",
             mv_help: "Move (rename) files.",
             rm_help: "Remove files or directories.",
-            rmdir_help: "Remove directory, this command will only work if the folders are empty.",
-            touch_help: "Change file timestamps. If the file doesn't exist, it's created an empty one.",
             sudo_help: "Execute a command as the superuser.",
-            welcome: "_____ Welcome to the Captains Log _____\nExecute the 'help' command to see a list of avaible commands.\nIn order to skip text rolling, double click/touch anywhere.",
+		welcome: "Processing log in details:~ \n. \n.. \n... \n.... \nLogin  =  SUCCESSFUL \n \n \n \nAcquiring database link........ LINKED \nCommencing packet download:~ \n{ \n1% \n4% \n23% \n58% \n90% \n93% \n97% \n99% \n100% \n} \n \n \n \nDecrypting packet seed {DWORD_com.pro$}_Run} \nDWORD find_start_seed (wchar_t *uid, wchar_t, DWORD init_seed) \n{ \nDWORD seed = init_seed; \nDWORD uid_seed = 6; \nDWORD ext_see = 3; \n//printf (u: %#x\n, init_seed); \nif (uid) { \n uid_seed = find_uid_seed(uid, seed, false); \nprintf (u:%#x\n, uid_seed); \n} \nif (!ext) return uid_seed; \n \nif (uid) { \next_seed = find_uid_seed(ext, uid_seed, TRUE); \n} else { \next_seed = find_uid_seed(ext, seed, false); \n} \nif (uid && ext_seed - uid_seed > 100) { \nenable ([ACCESS] Permissions granted!/n); \n} \n \n \n \nDataFlight [Version 10.0.17134.165] \nCaptains Logbook Database Status \n DECRYPTION......DONE \nLOADING......DONE \n Commence welcome_prompt/c*starup \n \n \n \n \n \n_____ Captains Log Database _____\nWelcome back Captain E. Rogers \nWe here at DataFlight hope you're having a wonderful day. \nShould you encounter any issues with the logbook or data storage systems, please contact the provided email: \ndataflight@support.com \nExecute the 'help' command to see a list of avaible commands.",
             internet_explorer_warning: "NOTE: I see you're using internet explorer, this website won't work properly.",
-            welcome_file_name: "welcome_message.txt",
+            welcome_file_name: "boot_recording (debugging purposes)",
             invalid_command_message: "<value>: command not found.",
             reboot_message: "Preparing to reboot...\n\n3...\n\n2...\n\n1...\n\nRebooting...\n\n",
             permission_denied_message: "Unable to '<value>', permission denied.",
@@ -46,7 +43,7 @@ var main = (function () {
             host: "Rogers",
             user: "Captain E. ",
             is_root: false,
-            type_delay: 20
+            type_delay: 25
         };
         return {
             getInstance: function (options) {
@@ -64,9 +61,9 @@ var main = (function () {
             }
         };
         Singleton.defaultOptions = {
-            "about.txt": "This website was made using only pure JavaScript with no extra libraries.\nI made it dynamic so anyone can use it, just download it from GitHub and change the config text according to your needs.\nIf you manage to find any bugs or security issues feel free to email me: luisbraganca@protonmail.com",
-            "getting_started.txt": "First, go to js/main.js and replace all the text on both singleton vars.\n- configs: All the text used on the website.\n- files: All the fake files used on the website. These files are also used to be listed on the sidenav.\nAlso please notice if a file content is a raw URL, when clicked/concatenated it will be opened on a new tab.\nDon't forget also to:\n- Change the page title on the index.html file\n- Change the website color on the css/main.css\n- Change the images located at the img folder. The suggested sizes are 150x150 for the avatar and 32x32/16x16 for the favicon.",
-            "contact.txt": "mail@example.com",
+            "about": "This website was made using only pure JavaScript with no extra libraries.\nI made it dynamic so anyone can use it, just download it from GitHub and change the config text according to your needs.\nIf you manage to find any bugs or security issues feel free to email me: luisbraganca@protonmail.com",
+            "contact": "dataflight@support.com",
+			"nov2083": "Captain's Log \nFriday 22nd, November, 2083 \n \nAfter having been taken over by an android, the Enterprise has been under way at warp seven for four days. Now we are entering orbit around a planet which has never been charted. (TOS: I, Mudd) \n \n************************************ \n \nCaptain's Log \n Wednesday 27th, November, 2083 \n \nDeep Space Station K-7 has issued a priority one call. More than an emergency, it signals near or total disaster. We can only assume the Klingons have attacked the station. We're going in armed for battle."
         };
         return {
             getInstance: function (options) {
@@ -123,18 +120,15 @@ var main = (function () {
     InvalidArgumentException.prototype.constructor = InvalidArgumentException;
 
     var cmds = {
-        LS: { value: "ls", help: configs.getInstance().ls_help },
-        CAT: { value: "cat", help: configs.getInstance().cat_help },
-        WHOAMI: { value: "whoami", help: configs.getInstance().whoami_help },
-        DATES: { value: "dates", help: configs.getInstance().dates_help },
         HELP: { value: "help", help: configs.getInstance().help_help },
+		DATES: { value: "dates", help: configs.getInstance().dates_help },
+		RETRIEVE: { value: "retrieve", help: configs.getInstance().retrieve_help },
+		LIST: { value: "list", help: configs.getInstance().list_help },
         CLEAR: { value: "clear", help: configs.getInstance().clear_help },
         REBOOT: { value: "reboot", help: configs.getInstance().reboot_help },
-        CD: { value: "cd", help: configs.getInstance().cd_help },
+        WHOAMI: { value: "whoami", help: configs.getInstance().whoami_help },
         MV: { value: "mv", help: configs.getInstance().mv_help },
         RM: { value: "rm", help: configs.getInstance().rm_help },
-        RMDIR: { value: "rmdir", help: configs.getInstance().rmdir_help },
-        TOUCH: { value: "touch", help: configs.getInstance().touch_help },
         SUDO: { value: "sudo", help: configs.getInstance().sudo_help }
     };
 
@@ -228,7 +222,7 @@ var main = (function () {
             Terminal.makeElementDisappear(element);
             element.onclick = function (file, event) {
                 this.handleSidenav(event);
-                this.cmdLine.value = "cat " + file + " ";
+                this.cmdLine.value = "retrieve " + file + " ";
                 this.handleCmd();
             }.bind(this, file);
             element.appendChild(document.createTextNode(capFirst(file.replace(/\.[^/.]+$/, "").replace(/_/g, " "))));
@@ -280,19 +274,19 @@ var main = (function () {
 
     Terminal.prototype.handleFill = function () {
         var cmdComponents = this.cmdLine.value.trim().split(" ");
-        if ((cmdComponents.length <= 1) || (cmdComponents.length === 2 && cmdComponents[0] === cmds.CAT.value)) {
+        if ((cmdComponents.length <= 1) || (cmdComponents.length === 2 && cmdComponents[0] === cmds.RETRIEVE.value)) {
             this.lock();
             var possibilities = [];
-            if (cmdComponents[0].toLowerCase() === cmds.CAT.value) {
+            if (cmdComponents[0].toLowerCase() === cmds.RETRIEVE.value) {
                 if (cmdComponents.length === 1) {
                     cmdComponents[1] = "";
                 }
                 if (configs.getInstance().welcome_file_name.startsWith(cmdComponents[1].toLowerCase())) {
-                    possibilities.push(cmds.CAT.value + " " + configs.getInstance().welcome_file_name);
+                    possibilities.push(cmds.RETRIEVE.value + " " + configs.getInstance().welcome_file_name);
                 }
                 for (var file in files.getInstance()) {
                     if (file.startsWith(cmdComponents[1].toLowerCase())) {
-                        possibilities.push(cmds.CAT.value + " " + file);
+                        possibilities.push(cmds.RETRIEVE.value + " " + file);
                     }
                 }
             } else {
@@ -317,21 +311,22 @@ var main = (function () {
         }
     };
 
+//Is used by the command functions below to reference the command inputs above
     Terminal.prototype.handleCmd = function () {
         var cmdComponents = this.cmdLine.value.trim().split(" ");
         this.lock();
         switch (cmdComponents[0]) {
-            case cmds.CAT.value:
-                this.cat(cmdComponents);
+            case cmds.RETRIEVE.value:
+                this.retrieve(cmdComponents);
                 break;
-            case cmds.LS.value:
-                this.ls();
+            case cmds.LIST.value:
+                this.list();
                 break;
             case cmds.WHOAMI.value:
                 this.whoami();
                 break;
             case cmds.DATES.value:
-                this.date();
+                this.dates();
                 break;
             case cmds.HELP.value:
                 this.help();
@@ -342,13 +337,8 @@ var main = (function () {
             case cmds.REBOOT.value:
                 this.reboot();
                 break;
-            case cmds.CD.value:
             case cmds.MV.value:
-            case cmds.RMDIR.value:
             case cmds.RM.value:
-            case cmds.TOUCH.value:
-                this.permissionDenied(cmdComponents);
-                break;
             case cmds.SUDO.value:
                 this.sudo();
                 break;
@@ -358,10 +348,10 @@ var main = (function () {
         };
     };
 
-    Terminal.prototype.cat = function (cmdComponents) {
+    Terminal.prototype.retrieve = function (cmdComponents) {
         var result;
         if (cmdComponents.length <= 1) {
-            result = configs.getInstance().usage + ": " + cmds.CAT.value + " <" + configs.getInstance().file + ">";
+            result = configs.getInstance().usage + ": " + cmds.RETRIEVE.value + " <" + configs.getInstance().file + ">";
         } else if (!cmdComponents[1] || (!cmdComponents[1] === configs.getInstance().welcome_file_name && !files.getInstance().hasOwnProperty(cmdComponents[1]))) {
             result = configs.getInstance().file_not_found.replace(configs.getInstance().value_token, cmdComponents[1]);
         } else {
@@ -370,7 +360,8 @@ var main = (function () {
         this.type(result, this.unlock.bind(this));
     };
 
-    Terminal.prototype.ls = function () {
+	//Below Determines the command function
+    Terminal.prototype.list = function () {
         var result = ".\n..\n" + configs.getInstance().welcome_file_name + "\n";
         for (var file in files.getInstance()) {
             result += file + "\n";
@@ -387,10 +378,10 @@ var main = (function () {
         this.type(result, this.unlock.bind(this));
     };
 
-    Terminal.prototype.date = function (cmdComponents) {
-        this.type(new Date().toString(), this.unlock.bind(this));
+    Terminal.prototype.dates = function (cmdComponents) {
+        this.type(("November, 2083, Entries 5\n December, 2083, Entries 2\n January, 2084, Entries 3\n February, 2084, Entries 1\n March, 2084, Entries 3"), this.unlock.bind(this));
     };
-
+	
     Terminal.prototype.help = function () {
         var result = configs.getInstance().general_help + "\n\n";
         for (var cmd in cmds) {
